@@ -1,6 +1,7 @@
 module Api
   module V1
     class ProjectsController < ApplicationController
+      before_action :authorize_access_request!, expect: [:show, :index]
       before_action :set_project, only: [:show, :update, :destroy]
 
       # GET /projects
@@ -48,7 +49,7 @@ module Api
 
         # Only allow a trusted parameter "white list" through.
         def project_params
-          params.require(:project).permit(:name, :user_id)
+          params.require(:project).permit(:name)
         end
     end
   end
