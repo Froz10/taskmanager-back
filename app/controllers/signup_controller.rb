@@ -7,11 +7,11 @@ class SignupController < ApplicationController
         session = JWTSessions::Session.new(payload: payload, refresh_by_access_allowed: true)
         tokens = session.login
 
-
-        responce.set_cookie(JWTSessions.access_cookie, 
-                            value: tokens[:access],
-                            httponly: true,
-                            secure: Rails.env.production? )
+        response.set_cookie(JWTSessions.refresh_cookie,
+                          value: tokens[:refresh],
+                          httponly: true,
+                          secure: Rails.env.production?)
+        
         render json: { csrf: tokens[:csrf] }
       else
         render json: { error: user.errors.full_messages.join(' ') }, status: :unprocessable_entity

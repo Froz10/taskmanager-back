@@ -157,12 +157,13 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.2)
   byebug
-  jwt_sessions (~> 2.3)
+  jwt
+  jwt_sessions
   listen (~> 3.2)
   puma (~> 4.1)
   rack-cors
   rails (~> 6.0.3, >= 6.0.3.3)
-  redis (~> 4.0)
+  redis
   spring
   spring-watcher-listen (~> 2.0.0)
   sqlite3 (~> 1.4)
