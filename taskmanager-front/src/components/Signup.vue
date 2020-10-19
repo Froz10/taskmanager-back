@@ -41,7 +41,7 @@ export default {
     signup: function () {
       this.$http({
         method: 'post',
-        url: 'http://localhost:3000/signup',
+        url: '/signup',
         data: {
           email: this.email,
           password: this.password,
@@ -57,6 +57,8 @@ export default {
         return
       }
       localStorage.csrf = response.data.csrf
+      localStorage.access = response.data.access
+      localStorage.refresh = response.data.refresh
       localStorage.signedIn = true
       this.error = ''
       this.$router.replace('/tasks')
@@ -64,6 +66,7 @@ export default {
     signupFailed (error) {
       this.error = (error.response && error.response.data && error.response.data.error) || 'Something went wrong'
       delete localStorage.csrf
+      delete localStorage.access
       delete localStorage.signedIn
     },
     checkSignedIn () {

@@ -13,15 +13,15 @@ class SigninController < ApplicationController
                         value: tokens[:access],
                         httponly: true,
                         secure: Rails.env.production?)
-      render json: { access: tokens[:access], csrf: tokens[:csrf] }
+      render json: tokens
     else
-      render json: "Invalid user", status: :unauthorized
+      not_authorized
     end
   end
 
   def destroy
     session = JWTSessions::Session.new(payload: payload)
-    session.flush_by_by_access_payload
+    session.flush_by_access_payload
     render json: :ok
   end
 

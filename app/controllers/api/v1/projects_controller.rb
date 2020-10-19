@@ -1,11 +1,12 @@
 module Api
   module V1
     class ProjectsController < ApplicationController
-      before_action :authorize_access_request!, expect: [:show, :index]
+      before_action :authorize_access_request!
       before_action :set_project, only: [:show, :update, :destroy]
 
       # GET /projects
       def index
+        current_user
         @projects = Project.all
 
         render json: @projects
@@ -21,7 +22,7 @@ module Api
         @project = Project.new(project_params)
 
         if @project.save
-          render json: @project, status: :created, location: @project
+          render json: @project, status: :created
         else
           render json: @project.errors, status: :unprocessable_entity
         end

@@ -34,14 +34,14 @@ export default {
     signin: function () {
       this.$http({
         method: 'post',
-        url: 'http://localhost:3000/signin',
+        url: '/signin',
         data: {
           email: this.email,
           password: this.password
         }
       })
         .then(response => this.signinSuccessful(response))
-        .catch(error => this.siginFailed(error))
+        .catch(error => this.signinFailed(error))
     },
     signinSuccessful (response) {
       if (!response.data.csrf) {
@@ -49,6 +49,8 @@ export default {
         return
       }
       localStorage.csrf = response.data.csrf
+      localStorage.access = response.data.access
+      localStorage.refresh = response.data.refresh
       localStorage.signedIn = true
       this.error = ''
       this.$router.replace('/tasks')
@@ -56,6 +58,7 @@ export default {
     signinFailed (error) {
       this.error = (error.response && error.response.data && error.response.data.error) || ''
       delete localStorage.csrf
+      delete localStorage.access
       delete localStorage.signedIn
     },
     checkSignedIn () {

@@ -30,11 +30,16 @@ export default {
     signedIn () {
       return localStorage.signedIn
     },
-    signOut () {
-      this.$http.secured.delete('/signin')
+    signOut: function () {
+      this.$http({
+        method: 'delete',
+        url: '/signin'
+      })
         .then(response => {
           delete localStorage.csrf
           delete localStorage.signedIn
+          delete localStorage.access
+          delete localStorage.refresh
           this.$router.replace('/')
         })
         .catch(error => this.setError(error, 'Cannot sign out'))

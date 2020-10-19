@@ -1,10 +1,29 @@
-import axios from 'axios'
+import Axios from 'axios'
 
-const API_URL = 'http://localhost:3000'
+Axios.interceptors.request.use(config => {
+  if (localStorage.signedIn) {
+    config.headers = { 'Authorization': 'Bearer ' + localStorage.access }
+  } else {
+    config.headers = { 'X-Refresh-Token': localStorage.refresh }
+  }
+  return config
+})
 
-export default axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json'
+Axios.interceptors.response.use(function (response) {
+  return response
+}, function (error) {
+  if (error.response.status === 401) {
+    delete localStorage.access
+    delete localStorage.signedIn
+    Axios({
+      method: 'post',
+      url: '/refresh'
+    })
+      .then(response => {
+        localStorage.access = response.data.access
+        localStorage.signedIn = true
+      })
+  } else {
+    return Promise.reject(error)
   }
 })

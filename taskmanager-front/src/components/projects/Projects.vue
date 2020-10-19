@@ -58,7 +58,8 @@ export default {
     if (!localStorage.signedIn) {
       this.$router.replace('/')
     } else {
-      this.$http.secured.get('/api/v1/projects')
+      this.$http
+        .get('/api/v1/projects')
         .then(response => { this.projects = response.data })
         .catch(error => this.setError(error, 'Something went wrong'))
     }
@@ -72,7 +73,9 @@ export default {
       if (!value) {
         return
       }
-      this.$http.secured.post('/api/v1/projects/', { project: { name: this.newProject.name } })
+      this.$http
+        .post('/api/v1/projects', {
+          project: { name: this.newProject.name } })
         .then(response => {
           this.projects.push(response.data)
           this.newProject = ''
@@ -80,7 +83,8 @@ export default {
         .catch(error => this.setError(error, 'Cannot create project'))
     },
     removeProject (project) {
-      this.$http.secured.delete(`/api/v1/projects/${project.id}`)
+      this.$http
+        .delete(`/api/v1/projects/${project.id}`)
         .then(response => {
           this.projects.splice(this.projects.indexOf(project), 1)
         })
@@ -91,7 +95,8 @@ export default {
     },
     updateProject (project) {
       this.editedProject = ''
-      this.$http.secured.patch(`/api/v1/projects/${project.id}`, { project: { name: project.name } })
+      this.$http
+        .patch(`/api/v1/projects/${project.id}`, { project: { name: project.name } })
         .catch(error => this.setError(error, 'Cannot update project'))
     }
   }

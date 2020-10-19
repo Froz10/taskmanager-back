@@ -54,10 +54,10 @@
         </div>
 
         <button class="bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded"
-          @click.prevent="edittask(task)">Edit</button>
+          @click.prevent="editTask(task)">Edit</button>
 
         <button class="bg-transparent text-sm hover:bg-red text-red hover:text-white no-underline font-bold py-2 px-4 rounded border border-red"
-         @click.prevent="removetask(task)">Delete</button>
+         @click.prevent="removeTask(task)">Delete</button>
         </div>
 
         <div v-if="task == editedTask">
@@ -106,10 +106,12 @@ export default {
     if (!localStorage.signedIn) {
       this.$router.replace('/')
     } else {
-      this.$http.secured.get('/api/v1/tasks')
+      this.$http
+        .get('/api/v1/tasks')
         .then(response => { this.tasks = response.data })
         .catch(error => this.setError(error, 'Something went wrong'))
-      this.$http.secured.get('/api/v1/projects')
+      this.$http
+        .get('/api/v1/projects')
         .then(response => { this.projects = response.data })
         .catch(error => this.setError(error, 'Something went wrong'))
     }
@@ -131,7 +133,10 @@ export default {
       if (!value) {
         return
       }
-      this.$http.secured.post('/api/v1/tasks/', { task: { name: this.newTask.title, status: this.newTask.status, project_id: this.newTask.project } })
+      this.$http
+        .post('/api/v1/tasks', {
+          task: { name: this.newTask.name, status: this.newTask.status, project_id: this.newTask.project }
+        })
         .then(response => {
           this.tasks.push(response.data)
           this.newTask = ''
@@ -139,7 +144,8 @@ export default {
         .catch(error => this.setError(error, 'Cannot create task'))
     },
     removeTask (task) {
-      this.$http.secured.delete(`/api/v1/tasks/${task.id}`)
+      this.$http
+        .delete(`/api/v1/tasks/${task.id}`)
         .then(response => {
           this.tasks.splice(this.tasks.indexOf(task), 1)
         })
@@ -150,7 +156,8 @@ export default {
     },
     updateTask (task) {
       this.editedTask = ''
-      this.$http.secured.patch(`/api/v1/tasks/${task.id}`, { task: { name: task.name, status: task.status, project_id: task.project } })
+      this.$http
+        .patch(`/api/v1/tasks/${task.id}`, { task: { name: task.name, status: task.status, project_id: task.project } })
         .catch(error => this.setError(error, 'Cannot update task'))
     }
   }
