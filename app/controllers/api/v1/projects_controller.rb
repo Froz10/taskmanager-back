@@ -6,8 +6,7 @@ module Api
 
       # GET /projects
       def index
-        current_user
-        @projects = Project.all
+        @projects = current_user.projects.all
 
         render json: @projects
       end
@@ -19,7 +18,7 @@ module Api
 
       # POST /projects
       def create
-        @project = Project.new(project_params)
+        @project = current_user.projects.build(project_params)
 
         if @project.save
           render json: @project, status: :created
@@ -45,7 +44,7 @@ module Api
       private
         # Use callbacks to share common setup or constraints between actions.
         def set_project
-          @project = Project.find(params[:id])
+          @project = current_user.projects.find(params[:id])
         end
 
         # Only allow a trusted parameter "white list" through.
