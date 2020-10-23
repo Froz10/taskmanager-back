@@ -8,7 +8,7 @@ import './main.css'
 Vue.config.productionTip = false
 Vue.prototype.$http = Axios
 
-Axios.defaults.baseURL = 'http://localhost:3000'
+Axios.defaults.baseURL = 'https://infinite-retreat-21524.herokuapp.com'
 
 /* eslint-disable no-new */
 new Vue({
