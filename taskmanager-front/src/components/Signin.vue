@@ -54,6 +54,7 @@ export default {
       localStorage.signedIn = true
       this.error = ''
       this.$router.replace('/tasks')
+      this.$router.go()
     },
     signinFailed (error) {
       this.error = (error.response && error.response.data && error.response.data.error) || ''

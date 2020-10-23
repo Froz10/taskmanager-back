@@ -183,6 +183,9 @@ export default {
       this.editedTask = ''
       this.$http
         .patch(`/api/v1/tasks/${task.id}`, { task: { name: task.name, status: task.status, project_id: task.project } })
+        .then(response => {
+          this.$router.go()
+        })
         .catch(error => this.setError(error, 'Cannot update task'))
     }
   }

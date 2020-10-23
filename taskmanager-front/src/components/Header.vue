@@ -41,6 +41,7 @@ export default {
           delete localStorage.access
           delete localStorage.refresh
           this.$router.replace('/')
+          this.$router.go()
         })
         .catch(error => this.setError(error, 'Cannot sign out'))
     }

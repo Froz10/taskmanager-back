@@ -15,6 +15,7 @@ Axios.interceptors.response.use(function (response) {
     delete localStorage.signedIn
     delete localStorage.csrf
     delete localStorage.refresh
+    this.$router.go()
   }
   return Promise.reject(error)
 })
